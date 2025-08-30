@@ -1,0 +1,11 @@
+ultralytics
+opencv-python-headless
+numpy
+scikit-image
+pillow
+pandas
+transformers
+ollama
+langchain
+chromadb
+tqdm
