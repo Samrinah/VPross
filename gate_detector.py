@@ -1,5 +1,3 @@
-# [file name]: gate_detector.py
-# [file content begin]
 from ultralytics import YOLO
 import cv2
 import numpy as np
@@ -16,9 +14,7 @@ logger = logging.getLogger(__name__)
 class LogicGateDetector:
     def __init__(self, model_path=None):
         try:
-            # Use default model path if not provided
             if model_path is None:
-                # Try to find the model in common locations
                 possible_paths = [
                     r"D:\pross image && text 2\pretrained model\train7\weights\best.pt",
                     "./pretrained_model/train7/weights/best.pt",
@@ -45,7 +41,6 @@ class LogicGateDetector:
             logger.info("Model loaded successfully")
         except Exception as e:
             logger.error(f"Failed to initialize detector: {str(e)}")
-            # Create a mock detector for text-only operation
             self.model = None
             self.class_names = ["AND", "OR", "NAND", "NOR", "XOR", "XNOR", "NOT"]
 
@@ -161,4 +156,3 @@ class LogicGateDetector:
         except Exception as e:
             logger.error(f"Connection finding failed: {str(e)}")
             return []
-# [file content end]
