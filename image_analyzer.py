@@ -1,5 +1,3 @@
-# [file name]: image_analyzer.py
-# [file content begin]
 import torch
 import logging
 from transformers import pipeline
@@ -51,7 +49,6 @@ class VerilogImageAnalyzer:
                 caption_result = self.caption_model(image_path)
                 caption = caption_result[0]['generated_text'] if caption_result else "No caption generated"
                 
-                # Enhance caption with Codellama
                 enhanced_prompt = f"Refine this circuit description to be more technical and precise: {caption}"
                 enhanced_caption = self.text_model.invoke(enhanced_prompt)
                 caption = enhanced_caption.content if hasattr(enhanced_caption, 'content') else enhanced_caption
@@ -61,11 +58,9 @@ class VerilogImageAnalyzer:
 
             logger.info(f"Caption: {caption}")
 
-            # 2. Detect gates and connections using LogicGateDetector
             logger.info("Detecting logic gates and connections...")
             gates, connections = self.gate_detector.detect_circuit(image_path)
 
-            # Estimate bit-width based on detected components and caption
             bit_width = self._estimate_bit_width(gates, caption)
 
             logger.info("Analysis complete.")
@@ -90,30 +85,26 @@ class VerilogImageAnalyzer:
         if not gates:
             return 1
         
-        # Look for N-bit components in gate types
         for gate in gates:
             if 'N-bit' in gate['type'] or 'n-bit' in gate['type']:
-                return 8  # Default to 8-bit if N-bit components found
+                return 8  
         
-        # Look for bit-width in caption
         bit_match = re.search(r'(\d+)-bit', caption, re.IGNORECASE)
         if bit_match:
             return int(bit_match.group(1))
         
-        return 1  # Default to 1-bit for simple gates
+        return 1  
 
     def analyze_text(self, text_description):
         """Analyze text description to extract components and estimate bit-width"""
         try:
             logger.info(f"Analyzing text description: {text_description}")
             
-            # Extract bit-width from text
             bit_width = 1
             bit_match = re.search(r'(\d+)-bit', text_description, re.IGNORECASE)
             if bit_match:
                 bit_width = int(bit_match.group(1))
             
-            # Extract potential components from text
             components = []
             component_keywords = {
                 "AND": ["and", "and gate"],
@@ -163,4 +154,5 @@ class VerilogImageAnalyzer:
                 "bit_width": 1,
                 "description": text_description
             }
+
 # [file content end]
