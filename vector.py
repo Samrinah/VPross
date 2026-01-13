@@ -1,5 +1,4 @@
-# [file name]: vector.py
-# [file content begin]
+
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
 from langchain_ollama.embeddings import OllamaEmbeddings
@@ -16,7 +15,6 @@ def create_retriever(csv_path="dataset.csv", persist_dir="./chroma_verilog_db", 
         logger.info(f"Loading dataset from {csv_path}")
         df = pd.read_csv(csv_path)
         
-        # Using the same model family for consistency
         embeddings = OllamaEmbeddings(model="codellama:7b-instruct")
         
         if force_reload or not os.path.exists(persist_dir):
@@ -141,4 +139,3 @@ def _generate_component_description(component_name, verilog_code):
         return "Gray code converter for error reduction in digital systems"
     else:
         return f"Verilog implementation of {component_name}"
-# [file content end]
